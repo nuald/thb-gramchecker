@@ -1,0 +1,52 @@
+/* This is just an example.  You shouldn't do this. */
+#grammarchecker-error
+{
+  color: red ! important;
+}
+#grammarchecker-toolbar-button
+{
+  list-style-image: url("chrome://grammarchecker/skin/toolbar-button.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+}
+#grammarchecker-toolbar-button:hover
+{
+  -moz-image-region: rect(24px 24px 48px  0px);
+}
+[iconsize="small"] #grammarchecker-toolbar-button
+{
+  -moz-image-region: rect( 0px 40px 16px 24px);
+}
+[iconsize="small"] #grammarchecker-toolbar-button:hover
+{
+  -moz-image-region: rect(24px 40px 40px 24px);
+}
+#grammarchecker-preview ul {
+	display: block;
+}
+#grammarchecker-preview ul ul {
+	margin-left:2em;
+}
+#grammarchecker-preview ul ul li {
+	display: block;
+	margin-top:0em;
+}
+#grammarchecker-preview ul li {
+	display: list-item;
+	list-style-position:inside;
+	/*margin-top:0.5em;*/
+}
+#grammarchecker-preview ul li b {
+	display: inline;
+	font-weight:bolder;
+}
+#grammarchecker-preview div {
+	display: block;
+}
+#grammarchecker-preview {
+	display: block;
+}
+#grammarchecker-panel {
+	overflow:auto;
+	margin-left:0.5em;
+	max-height:15em;
+}
