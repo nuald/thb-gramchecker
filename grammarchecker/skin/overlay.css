@@ -5,20 +5,11 @@
 }
 #grammarchecker-toolbar-button
 {
-  list-style-image: url("chrome://grammarchecker/skin/toolbar-button.png");
-  -moz-image-region: rect(0px 24px 24px 0px);
-}
-#grammarchecker-toolbar-button:hover
-{
-  -moz-image-region: rect(24px 24px 48px  0px);
+  list-style-image: url("chrome://grammarchecker/skin/grammarcheck.png");
 }
 [iconsize="small"] #grammarchecker-toolbar-button
 {
-  -moz-image-region: rect( 0px 40px 16px 24px);
-}
-[iconsize="small"] #grammarchecker-toolbar-button:hover
-{
-  -moz-image-region: rect(24px 40px 40px 24px);
+  list-style-image: url("chrome://grammarchecker/skin/grammarcheck_small.png");
 }
 #grammarchecker-preview ul {
 	display: block;
