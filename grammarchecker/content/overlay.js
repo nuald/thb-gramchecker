@@ -179,7 +179,6 @@ var grammarchecker = {
 		}
 	},
 	onToolbarButtonCommand: function(e) {
-		// just reuse the function above.  you can change this, obviously!
 		grammarchecker.onMenuItemCommand(e);
 	}
 };
