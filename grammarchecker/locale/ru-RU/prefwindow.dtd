@@ -1,0 +1,6 @@
+<!ENTITY prefwindow.title "Настройки проверки грамматики">
+<!ENTITY pane1.title "Настройки проверки грамматики">
+<!ENTITY urlpref.label "LanguageTool сервер">
+<!ENTITY urlpref.accesskey "S">
+<!ENTITY langpref.label "Язык по умолчанию">
+<!ENTITY langpref.accesskey "L">
