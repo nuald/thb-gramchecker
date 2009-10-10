@@ -106,17 +106,17 @@ var grammarchecker = {
 		append("replacementsMessage", replacements);
     },
     showNodes: function(nodes) {
-		grammarchecker.clearPreview();
+		this.clearPreview();
 		var preview=document.getElementById("grammarchecker-preview");
 		var ul = document.createElement("ul");
 		preview.appendChild(ul);
 		for (var i = 0; i < nodes.snapshotLength; i++) {
 			var item = nodes.snapshotItem(i);
 			var li = document.createElement("li");
-			grammarchecker.createDescription(item, li);
+			this.createDescription(item, li);
 			ul.appendChild(li);
 			var innerUl = document.createElement("ul");
-			grammarchecker.addRule(item, innerUl);
+			this.addRule(item, innerUl);
 			ul.appendChild(innerUl);
 		}
 	},
@@ -129,13 +129,13 @@ var grammarchecker = {
 			XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null );
 
 		if (nodes.snapshotLength > 0) {
-			grammarchecker.showNodes(nodes);
+			this.showNodes(nodes);
 		} else {
-			grammarchecker.showText("noErrorsMessage", null);
+			this.showText("noErrorsMessage", null);
 		}
 	},
 	showText: function(textId, appendix) {
-		grammarchecker.clearPreview();
+		this.clearPreview();
 		var preview = document.getElementById("grammarchecker-preview");
 		var text = this.strings.getString(textId);
 		if (appendix != null) {
@@ -145,7 +145,7 @@ var grammarchecker = {
 		preview.appendChild(textNode);
 	},
 	showError: function(errorId) {
-		grammarchecker.clearPreview();
+		this.clearPreview();
 		var preview = document.getElementById("grammarchecker-preview");
 		var text = this.strings.getString(errorId);
 		var errorMsg = document.createTextNode(text);
@@ -154,18 +154,29 @@ var grammarchecker = {
 		errorDiv.appendChild(errorMsg);
 		preview.appendChild(errorDiv);
 	},
+	getLangFromSpellChecker: function(prefs, editor) {
+		try {
+			var gSpellChecker = editor.getInlineSpellChecker(true);
+			var lang = gSpellChecker.spellChecker.GetCurrentDictionary();
+			return lang.substr(0, 2);
+		} catch (ex) {
+			return prefs.getCharPref("langpref");
+		}
+
+	},
 	onMenuItemCommand: function(e) {
 		var prefs = Components.classes["@mozilla.org/preferences-service;1"]
 		    .getService(Components.interfaces.nsIPrefService)
 		    .getBranch("extensions.grammarchecker.");
 		prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
 		var server = prefs.getCharPref("urlpref");
-		var lang = prefs.getCharPref("langpref");
 
-		grammarchecker.showText("processingMessage",
-								" " + server + " [" + lang + "] ...");
 		//Get the current editor
 		var editor = GetCurrentEditor();
+		lang = this.getLangFromSpellChecker(prefs, editor);
+
+		this.showText("processingMessage"," "+server+" ["+lang+"] ...");
+
 		//Get the html Source message document
 		var htmlSource = editor.outputToString('text/plain', 4);
 		var xhr=Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"];
@@ -186,12 +197,9 @@ var grammarchecker = {
 		try {
 			req.send("language=" + lang + "&text=" + htmlSource);
 		} catch (ex) {
-			grammarchecker.showError("errorMessage");
+			this.showError("errorMessage");
 			return;
 		}
-	},
-	onToolbarButtonCommand: function(e) {
-		grammarchecker.onMenuItemCommand(e);
 	}
 };
 window.addEventListener(
@@ -201,6 +209,6 @@ window.addEventListener(
 );
 window.addEventListener(
     "compose-window-init",
-    function() {grammarchecker.clearPreview()},
+    function() { grammarchecker.clearPreview(); },
     true
 );
