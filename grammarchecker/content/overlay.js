@@ -35,13 +35,6 @@
  * ***** END LICENSE BLOCK ***** */
 
 var grammarchecker = {
-	clearPreview: function() {
-		var preview=document.getElementById("grammarchecker-preview");
-		while (preview.firstChild) {
-			//The list is LIVE so it will re-index each call
-			preview.removeChild(preview.firstChild);
-		}
-	},
 	onLoad: function() {
 		// initialization code
 		this.initialized = true;
@@ -52,6 +45,25 @@ var grammarchecker = {
 		    function(e) { this.showContextMenu(e); },
 		    false
 		);
+		var nsGrammarCommand = {
+			isCommandEnabled: function(aCommand, dummy) {
+				return (IsDocumentEditable() &&	!IsInHTMLSourceMode());
+			},
+			getCommandStateParams: function(aCommand, aParams, aRefCon) {},
+			doCommandParams: function(aCommand, aParams, aRefCon) {},
+			doCommand: function(aCommand) {
+				grammarchecker.onMenuItemCommand(aCommand);
+			}
+		};
+		var commandTable = GetComposerCommandTable();
+		commandTable.registerCommand("cmd_grammar", nsGrammarCommand);
+	},
+	clearPreview: function() {
+		var preview=document.getElementById("grammarchecker-preview");
+		while (preview.firstChild) {
+			//The list is LIVE so it will re-index each call
+			preview.removeChild(preview.firstChild);
+		}
 	},
 	showContextMenu: function(event) {
 		// show or hide the menuitem based on what the context menu is on
