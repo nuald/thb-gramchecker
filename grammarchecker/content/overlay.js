@@ -71,10 +71,28 @@ var grammarchecker = {
 		var context = document.getElementById("context-grammarchecker");
 		context.hidden = (GetNumSelectedMessages() > 0);
 	},
-	createDescription: function(item, li) {
+	createDescription: function(item, li, nodesMapping) {
 		var context = item.attributes["context"].textContent;
 		var offset = parseInt(item.attributes["contextoffset"].textContent);
 		var len = parseInt(item.attributes["errorlength"].textContent);
+
+		var fromx = parseInt(item.attributes["fromx"].textContent);
+		var tox = parseInt(item.attributes["tox"].textContent) - 1;
+
+		var startItem = this.findNode(fromx, nodesMapping);
+		var endItem = this.findNode(tox, nodesMapping);
+
+		var range = document.createRange();
+		var newNode = document.createElement("span");
+		newNode.setAttribute("style", "border-bottom:1px dotted blue;");
+		//newNode.setAttribute("color", "#ff0000");
+		//newNode.setAttribute("_moz_dirty", "");
+		//TODO: class is not applied correctly
+		//newNode.setAttribute("class", "grammarchecker-highlight");
+		range.setStart(startItem.node, startItem.offset);
+		range.setEnd(endItem.node, endItem.offset);
+		range.surroundContents(newNode);
+
 		var contextLen = context.length;
 		var overall = offset + len;
 
@@ -105,7 +123,7 @@ var grammarchecker = {
 		append("ruleMessage", msg);
 		append("replacementsMessage", replacements);
     },
-    showNodes: function(nodes) {
+    showNodes: function(nodes, nodesMapping) {
 		this.clearPreview();
 		var preview=document.getElementById("grammarchecker-preview");
 		var ul = document.createElement("ul");
@@ -113,14 +131,14 @@ var grammarchecker = {
 		for (var i = 0; i < nodes.snapshotLength; i++) {
 			var item = nodes.snapshotItem(i);
 			var li = document.createElement("li");
-			this.createDescription(item, li);
+			this.createDescription(item, li, nodesMapping);
 			ul.appendChild(li);
 			var innerUl = document.createElement("ul");
 			this.addRule(item, innerUl);
 			ul.appendChild(innerUl);
 		}
 	},
-	showResult: function(xmlDoc) {
+	showResult: function(xmlDoc, nodesMapping) {
 		var nsResolver = xmlDoc.createNSResolver(
 			xmlDoc.ownerDocument == null ?
 			    xmlDoc.documentElement : xmlDoc.ownerDocument.documentElement);
@@ -129,7 +147,7 @@ var grammarchecker = {
 			XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null );
 
 		if (nodes.snapshotLength > 0) {
-			this.showNodes(nodes);
+			this.showNodes(nodes, nodesMapping);
 		} else {
 			this.showText("noErrorsMessage", null);
 		}
@@ -164,6 +182,42 @@ var grammarchecker = {
 		}
 
 	},
+	parseNodes: function(result, root, nodesMapping) {
+		var i = 0;
+		for (i = 0; i < root.childNodes.length; i++) {
+			var item = root.childNodes[i];
+			if (item.nodeType == Node.TEXT_NODE) {
+				result += item.textContent;
+				nodesMapping[result.length] = item;
+			} else {
+				result = this.parseNodes(result, item, nodesMapping);
+			}
+		}
+		return result;
+	},
+	findNode: function(pos, nodesMapping) {
+		var right = -1;
+		var left = -1;
+		var node = null;
+		for (var key in nodesMapping) {
+			if (pos > parseInt(key)) {
+				var currentLeft = pos - parseInt(key);
+				if (left == -1 || currentLeft < left) {
+					left = currentLeft;
+				}
+				continue;
+			}
+			var currentRight = parseInt(key) - pos;
+			if (right == -1 || currentRight < right) {
+				right = currentRight;
+				node = nodesMapping[key];
+			}
+		}
+		var item = {};
+		item["node"] = node;
+		item["offset"] = left;
+		return item;
+	},
 	onMenuItemCommand: function(e) {
 		var prefs = Components.classes["@mozilla.org/preferences-service;1"]
 		    .getService(Components.interfaces.nsIPrefService)
@@ -173,12 +227,16 @@ var grammarchecker = {
 
 		//Get the current editor
 		var editor = GetCurrentEditor();
-		lang = this.getLangFromSpellChecker(prefs, editor);
 
+		lang = this.getLangFromSpellChecker(prefs, editor);
 		this.showText("processingMessage"," "+server+" ["+lang+"] ...");
 
 		//Get the html Source message document
-		var htmlSource = editor.outputToString('text/plain', 4);
+		var nodesMapping = {};
+		nodesMapping[0] = editor.rootElement;
+		var htmlSource = this.parseNodes("", editor.rootElement, nodesMapping);
+
+		//var htmlSource = editor.outputToString('text/plain', 4);
 		var xhr=Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"];
 		var req = xhr.createInstance(Components.interfaces.nsIXMLHttpRequest);
 		req.open('POST', server, true);
@@ -190,7 +248,7 @@ var grammarchecker = {
 				if (result == null) {
 					grammarchecker.showError("errorMessage");
 				} else {
-					grammarchecker.showResult(result);
+					grammarchecker.showResult(result, nodesMapping);
 				}
 			}
 		};

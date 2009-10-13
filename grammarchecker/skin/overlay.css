@@ -3,6 +3,10 @@
 {
   color: red ! important;
 }
+font.grammarchecker-highlight
+{
+  border-bottom:1px dotted blue;
+}
 #grammarchecker-toolbar-button
 {
   list-style-image: url("chrome://grammarchecker/skin/grammarcheck.png");
