@@ -45,7 +45,7 @@ var grammarchecker = {
 		var msgCompose = document.getElementById("msgComposeContext");
 		msgCompose.addEventListener(
 		    "popupshowing",
-		    function(e) { this.showContextMenu(e); },
+		    function(e) { grammarchecker.showContextMenu(e); },
 		    false
 		);
 		var nsGrammarCommand = {
@@ -68,6 +68,9 @@ var grammarchecker = {
 			preview.removeChild(preview.firstChild);
 		};
 		this.ranges = [];
+		var editor = GetCurrentEditor();
+		editor.QueryInterface(nsIEditorStyleSheets);
+		editor.addOverrideStyleSheet("chrome://grammarchecker/skin/overlay.css");
 	},
 	showContextMenu: function(event) {
 		// show or hide the menuitem based on what the context menu is on
@@ -83,8 +86,18 @@ var grammarchecker = {
 		}
 		return true;
 	},
+	prepareSelection: function() {
+		var editor = GetCurrentEditor();
+		var s = editor.selection;
+		if (s.rangeCount > 0) {
+			s.removeAllRanges();
+		}
+		return s;
+	},
 	createDescription: function(item, li) {
 		this.nodesMapping.init();
+		var editor = GetCurrentEditor();
+		var s = editor.selection;
 
 		var context = item.attributes["context"].textContent;
 		var offset = parseInt(item.attributes["contextoffset"].textContent);
@@ -98,16 +111,15 @@ var grammarchecker = {
 			var startItem = this.nodesMapping.findNode(fromx, fromy);
 			var endItem = this.nodesMapping.findNode(tox, fromy);
 		
-			var range = document.createRange();
-			var newNode = document.createElement("span");
-			newNode.setAttribute("style", "border-bottom:1px dotted blue;");
-			//newNode.setAttribute("color", "#ff0000");
-			//newNode.setAttribute("_moz_dirty", "");
-			//TODO: class is not applied correctly
-			//newNode.setAttribute("class", "grammarchecker-highlight");
-			range.setStart(startItem.node, startItem.offset);
-			range.setEnd(endItem.node, endItem.offset);
-			range.surroundContents(newNode);
+			if (startItem != null && endItem != null) {
+				var range = document.createRange();
+				range.setStart(startItem.node, startItem.offset);
+				range.setEnd(endItem.node, endItem.offset);
+				var s = this.prepareSelection();
+				s.addRange(range);
+				editor.setInlineProperty("span", "class",
+										 "grammarchecker-highlight");
+			}
 		}
 
 		var contextLen = context.length;
@@ -154,6 +166,7 @@ var grammarchecker = {
 			this.addRule(item, innerUl);
 			ul.appendChild(innerUl);
 		}
+		this.prepareSelection();
 	},
 	showResult: function(xmlDoc) {
 		var nsResolver = xmlDoc.createNSResolver(

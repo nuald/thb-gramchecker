@@ -3,9 +3,10 @@
 {
   color: red ! important;
 }
-font.grammarchecker-highlight
+span.grammarchecker-highlight
 {
   border-bottom:1px dotted blue;
+  display: inline ! important;
 }
 #grammarchecker-toolbar-button
 {
