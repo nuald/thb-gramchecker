@@ -71,6 +71,25 @@ var grammarchecker = {
 		var editor = GetCurrentEditor();
 		editor.QueryInterface(nsIEditorStyleSheets);
 		editor.addOverrideStyleSheet("chrome://grammarchecker/skin/overlay.css");
+		var xmlDoc = editor.document;
+		var nsResolver = xmlDoc.createNSResolver(
+			xmlDoc.ownerDocument == null ?
+			    xmlDoc.documentElement : xmlDoc.ownerDocument.documentElement);
+
+		var getPath = function() {
+			return xmlDoc.evaluate("//span[@class='grammarchecker-highlight']",
+			   xmlDoc, nsResolver, XPathResult.ANY_UNORDERED_NODE_TYPE,
+			   null).singleNodeValue;
+		};
+		var node = getPath();
+		while (node != null) {
+			var s = this.prepareSelection();
+			var range = xmlDoc.createRange();
+			range.selectNode(node);
+			s.addRange(range);
+			editor.removeInlineProperty("span", "class");
+			node = getPath();
+		}
 	},
 	showContextMenu: function(event) {
 		// show or hide the menuitem based on what the context menu is on
@@ -224,7 +243,6 @@ var grammarchecker = {
 
 		//Get the html Source message document
 		var htmlSource = this.nodesMapping.init();
-
 		var xhr=Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"];
 		var req = xhr.createInstance(Components.interfaces.nsIXMLHttpRequest);
 		req.open('POST', server, true);

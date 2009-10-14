@@ -40,6 +40,10 @@ function NodesMapping() {
 	this.counterY = 0;
 	this.counterX = 0;
 
+	this.trim = function(string) {
+		return string.replace(/(^[\n\r]+)|([\n\r]+$)/g, "");
+	};
+
 	this.init = function() {
 		this.nodes = {};
 		this.counterX = 0;
@@ -55,7 +59,7 @@ function NodesMapping() {
 		for (i = 0; i < root.childNodes.length; i++) {
 			var item = root.childNodes[i];
 			if (item.nodeType == Node.TEXT_NODE) {
-				var text = String(item.textContent);
+				var text = this.trim(item.textContent);
 				if (text.length > 0) {
 					result += text;
 					var previousX = this.counterX;
@@ -64,10 +68,12 @@ function NodesMapping() {
 					currentNodes[previousX + "," + this.counterX] = item;
 				}
 			} else if (item.localName.toUpperCase() == "BR") {
-				result += "\n";
-				this.counterY += 1;
-				this.counterX = 0;
-				this.nodes[this.counterY] = {};
+				if (this.counterX > 0) {
+					result += "\n";
+					this.counterY += 1;
+					this.counterX = 0;
+					this.nodes[this.counterY] = {};
+				}
 			} else {
 				result = this.parseNodes(result, item);
 			}
