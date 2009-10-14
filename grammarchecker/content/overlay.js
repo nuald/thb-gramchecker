@@ -39,6 +39,9 @@ var grammarchecker = {
 		// initialization code
 		this.initialized = true;
 		this.strings = document.getElementById("grammarchecker-strings");
+		this.nodesMapping = new NodesMapping();
+		this.ranges = [];
+
 		var msgCompose = document.getElementById("msgComposeContext");
 		msgCompose.addEventListener(
 		    "popupshowing",
@@ -63,7 +66,8 @@ var grammarchecker = {
 		while (preview.firstChild) {
 			//The list is LIVE so it will re-index each call
 			preview.removeChild(preview.firstChild);
-		}
+		};
+		this.ranges = [];
 	},
 	showContextMenu: function(event) {
 		// show or hide the menuitem based on what the context menu is on
@@ -71,27 +75,40 @@ var grammarchecker = {
 		var context = document.getElementById("context-grammarchecker");
 		context.hidden = (GetNumSelectedMessages() > 0);
 	},
-	createDescription: function(item, li, nodesMapping) {
+	isInRanges: function(fromx, tox, y) {
+		var index = fromx + "," + tox + "," + y;
+		if (this.ranges.indexOf(index) == -1) {
+			this.ranges.push(index);
+			return false;
+		}
+		return true;
+	},
+	createDescription: function(item, li) {
+		this.nodesMapping.init();
+
 		var context = item.attributes["context"].textContent;
 		var offset = parseInt(item.attributes["contextoffset"].textContent);
 		var len = parseInt(item.attributes["errorlength"].textContent);
 
 		var fromx = parseInt(item.attributes["fromx"].textContent);
+		var fromy = parseInt(item.attributes["fromy"].textContent);
 		var tox = parseInt(item.attributes["tox"].textContent) - 1;
 
-		var startItem = this.findNode(fromx, nodesMapping);
-		var endItem = this.findNode(tox, nodesMapping);
-
-		var range = document.createRange();
-		var newNode = document.createElement("span");
-		newNode.setAttribute("style", "border-bottom:1px dotted blue;");
-		//newNode.setAttribute("color", "#ff0000");
-		//newNode.setAttribute("_moz_dirty", "");
-		//TODO: class is not applied correctly
-		//newNode.setAttribute("class", "grammarchecker-highlight");
-		range.setStart(startItem.node, startItem.offset);
-		range.setEnd(endItem.node, endItem.offset);
-		range.surroundContents(newNode);
+		if (!this.isInRanges(fromx, tox, fromy)) {
+			var startItem = this.nodesMapping.findNode(fromx, fromy);
+			var endItem = this.nodesMapping.findNode(tox, fromy);
+		
+			var range = document.createRange();
+			var newNode = document.createElement("span");
+			newNode.setAttribute("style", "border-bottom:1px dotted blue;");
+			//newNode.setAttribute("color", "#ff0000");
+			//newNode.setAttribute("_moz_dirty", "");
+			//TODO: class is not applied correctly
+			//newNode.setAttribute("class", "grammarchecker-highlight");
+			range.setStart(startItem.node, startItem.offset);
+			range.setEnd(endItem.node, endItem.offset);
+			range.surroundContents(newNode);
+		}
 
 		var contextLen = context.length;
 		var overall = offset + len;
@@ -123,7 +140,7 @@ var grammarchecker = {
 		append("ruleMessage", msg);
 		append("replacementsMessage", replacements);
     },
-    showNodes: function(nodes, nodesMapping) {
+    showNodes: function(nodes) {
 		this.clearPreview();
 		var preview=document.getElementById("grammarchecker-preview");
 		var ul = document.createElement("ul");
@@ -131,14 +148,14 @@ var grammarchecker = {
 		for (var i = 0; i < nodes.snapshotLength; i++) {
 			var item = nodes.snapshotItem(i);
 			var li = document.createElement("li");
-			this.createDescription(item, li, nodesMapping);
+			this.createDescription(item, li);
 			ul.appendChild(li);
 			var innerUl = document.createElement("ul");
 			this.addRule(item, innerUl);
 			ul.appendChild(innerUl);
 		}
 	},
-	showResult: function(xmlDoc, nodesMapping) {
+	showResult: function(xmlDoc) {
 		var nsResolver = xmlDoc.createNSResolver(
 			xmlDoc.ownerDocument == null ?
 			    xmlDoc.documentElement : xmlDoc.ownerDocument.documentElement);
@@ -147,7 +164,7 @@ var grammarchecker = {
 			XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null );
 
 		if (nodes.snapshotLength > 0) {
-			this.showNodes(nodes, nodesMapping);
+			this.showNodes(nodes);
 		} else {
 			this.showText("noErrorsMessage", null);
 		}
@@ -172,7 +189,8 @@ var grammarchecker = {
 		errorDiv.appendChild(errorMsg);
 		preview.appendChild(errorDiv);
 	},
-	getLangFromSpellChecker: function(prefs, editor) {
+	getLangFromSpellChecker: function(prefs) {
+		var editor = GetCurrentEditor();
 		try {
 			var gSpellChecker = editor.getInlineSpellChecker(true);
 			var lang = gSpellChecker.spellChecker.GetCurrentDictionary();
@@ -182,61 +200,18 @@ var grammarchecker = {
 		}
 
 	},
-	parseNodes: function(result, root, nodesMapping) {
-		var i = 0;
-		for (i = 0; i < root.childNodes.length; i++) {
-			var item = root.childNodes[i];
-			if (item.nodeType == Node.TEXT_NODE) {
-				result += item.textContent;
-				nodesMapping[result.length] = item;
-			} else {
-				result = this.parseNodes(result, item, nodesMapping);
-			}
-		}
-		return result;
-	},
-	findNode: function(pos, nodesMapping) {
-		var right = -1;
-		var left = -1;
-		var node = null;
-		for (var key in nodesMapping) {
-			if (pos > parseInt(key)) {
-				var currentLeft = pos - parseInt(key);
-				if (left == -1 || currentLeft < left) {
-					left = currentLeft;
-				}
-				continue;
-			}
-			var currentRight = parseInt(key) - pos;
-			if (right == -1 || currentRight < right) {
-				right = currentRight;
-				node = nodesMapping[key];
-			}
-		}
-		var item = {};
-		item["node"] = node;
-		item["offset"] = left;
-		return item;
-	},
 	onMenuItemCommand: function(e) {
 		var prefs = Components.classes["@mozilla.org/preferences-service;1"]
 		    .getService(Components.interfaces.nsIPrefService)
 		    .getBranch("extensions.grammarchecker.");
 		prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
 		var server = prefs.getCharPref("urlpref");
-
-		//Get the current editor
-		var editor = GetCurrentEditor();
-
-		lang = this.getLangFromSpellChecker(prefs, editor);
+		var lang = this.getLangFromSpellChecker(prefs);
 		this.showText("processingMessage"," "+server+" ["+lang+"] ...");
 
 		//Get the html Source message document
-		var nodesMapping = {};
-		nodesMapping[0] = editor.rootElement;
-		var htmlSource = this.parseNodes("", editor.rootElement, nodesMapping);
+		var htmlSource = this.nodesMapping.init();
 
-		//var htmlSource = editor.outputToString('text/plain', 4);
 		var xhr=Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"];
 		var req = xhr.createInstance(Components.interfaces.nsIXMLHttpRequest);
 		req.open('POST', server, true);
@@ -248,7 +223,7 @@ var grammarchecker = {
 				if (result == null) {
 					grammarchecker.showError("errorMessage");
 				} else {
-					grammarchecker.showResult(result, nodesMapping);
+					grammarchecker.showResult(result);
 				}
 			}
 		};
