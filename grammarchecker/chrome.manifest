@@ -4,3 +4,4 @@ locale	grammarchecker	ru-RU	locale/ru-RU/
 skin	grammarchecker	classic/1.0	skin/
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://grammarchecker/content/thunderbirdOverlay.xul
 style	chrome://global/content/customizeToolbar.xul	chrome://grammarchecker/skin/overlay.css
+
