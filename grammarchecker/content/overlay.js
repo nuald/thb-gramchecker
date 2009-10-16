@@ -34,6 +34,8 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
+const overlayCss = "chrome://grammarchecker/skin/overlay.css";
+
 var grammarchecker = {
 	onLoad: function() {
 		// initialization code
@@ -69,8 +71,13 @@ var grammarchecker = {
 		};
 		this.ranges = [];
 		var editor = GetCurrentEditor();
+		if (editor != null) {
+			this.prepareEditor(editor);
+		}
+	},
+	prepareEditor: function(editor) {
 		editor.QueryInterface(nsIEditorStyleSheets);
-		editor.addOverrideStyleSheet("chrome://grammarchecker/skin/overlay.css");
+		editor.addOverrideStyleSheet(overlayCss);
 		var xmlDoc = editor.document;
 		var nsResolver = xmlDoc.createNSResolver(
 			xmlDoc.ownerDocument == null ?
@@ -136,7 +143,10 @@ var grammarchecker = {
 				range.setEnd(endItem.node, endItem.offset);
 				var s = this.prepareSelection();
 				s.addRange(range);
-				editor.setInlineProperty("span", "class",
+				var atomService = Components.classes["@mozilla.org/atom-service;1"].getService(Components.interfaces.nsIAtomService);
+				var span = atomService.getAtom("span");
+				editor.QueryInterface(nsIHTMLEditor);
+				editor.setInlineProperty(span, "class",
 										 "grammarchecker-highlight");
 			}
 		}
