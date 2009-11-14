@@ -246,7 +246,7 @@ var grammarchecker = {
 		this.showText("processingMessage"," "+server+" ["+lang+"] ...");
 
 		//Get the html Source message document
-		var htmlSource = this.nodesMapping.init();
+		var htmlSource = encodeURIComponent(this.nodesMapping.init());
 		var xhr=Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"];
 		var req = xhr.createInstance(Components.interfaces.nsIXMLHttpRequest);
 		req.open('POST', server, true);
