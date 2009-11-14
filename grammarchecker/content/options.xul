@@ -40,10 +40,12 @@
 <prefwindow id="grammarcheckerPreferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="&prefwindow.title;">
   <prefpane id="pane1" label="&pane1.title;">
     <preferences>
-      <preference id="urlpref" name="extensions.grammarchecker.urlpref" type="string"/>
+      <preference id="urlpref1" name="extensions.grammarchecker.urlpref1" type="string"/>
+      <preference id="urlpref2" name="extensions.grammarchecker.urlpref2" type="string"/>
       <preference id="langpref" name="extensions.grammarchecker.langpref" type="string"/>
     </preferences>
-    <label accesskey="&urlpref.accesskey;" control="texturlpref">&urlpref.label;</label><textbox id="texturlpref" preference="urlpref"/>
+    <label accesskey="&urlpref1.accesskey;" control="texturlpref1">&urlpref1.label;</label><textbox id="texturlpref1" preference="urlpref1"/>
+    <label accesskey="&urlpref2.accesskey;" control="texturlpref2">&urlpref2.label;</label><textbox id="texturlpref2" preference="urlpref2"/>
     <label accesskey="&langpref.accesskey;" control="textlangpref">&langpref.label;</label><textbox id="textlangpref" preference="langpref"/>
   </prefpane>
 </prefwindow>
