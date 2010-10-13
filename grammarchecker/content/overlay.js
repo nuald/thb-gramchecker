@@ -44,12 +44,6 @@ var grammarchecker = {
 		this.nodesMapping = new NodesMapping();
 		this.ranges = [];
 
-		var msgCompose = document.getElementById("msgComposeContext");
-		msgCompose.addEventListener(
-		    "popupshowing",
-		    function(e) { grammarchecker.showContextMenu(e); },
-		    false
-		);
 		var nsGrammarCommand = {
 			isCommandEnabled: function(aCommand, dummy) {
 				return (IsDocumentEditable() &&	!IsInHTMLSourceMode());
@@ -97,12 +91,6 @@ var grammarchecker = {
 			editor.removeInlineProperty("span", "class");
 			node = getPath();
 		}
-	},
-	showContextMenu: function(event) {
-		// show or hide the menuitem based on what the context menu is on
-		// see http://kb.mozillazine.org/Adding_items_to_menus
-		var context = document.getElementById("context-grammarchecker");
-		context.hidden = (GetNumSelectedMessages() > 0);
 	},
 	isInRanges: function(fromx, tox, y) {
 		var index = fromx + "," + tox + "," + y;
