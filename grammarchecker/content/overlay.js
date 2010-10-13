@@ -242,17 +242,11 @@ var grammarchecker = {
 		}
 
 	},
-	onMenuItemCommand: function(e) {
-		var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-		    .getService(Components.interfaces.nsIPrefService)
-		    .getBranch("extensions.grammarchecker.");
-		prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-		var server = prefs.getCharPref("urlpref");
-		var lang = this.getLangFromSpellChecker(prefs);
+	checkGrammar: function(server, lang, errorHandler) {
 		this.showText("processingMessage"," "+server+" ["+lang+"] ...");
 
 		//Get the html Source message document
-		var htmlSource = this.nodesMapping.init();
+		var htmlSource = encodeURIComponent(this.nodesMapping.init());
 		var xhr=Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"];
 		var req = xhr.createInstance(Components.interfaces.nsIXMLHttpRequest);
 		req.open('POST', server, true);
@@ -263,6 +257,7 @@ var grammarchecker = {
 				var result = req.responseXML;
 				if (result == null) {
 					grammarchecker.showError("errorMessage");
+					errorHandler();
 				} else {
 					grammarchecker.showResult(result);
 				}
@@ -272,8 +267,20 @@ var grammarchecker = {
 			req.send("language=" + lang + "&text=" + htmlSource);
 		} catch (ex) {
 			this.showError("errorMessage");
-			return;
+			errorHandler();
 		}
+	},
+	onMenuItemCommand: function(e) {
+		var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+		    .getService(Components.interfaces.nsIPrefService)
+		    .getBranch("extensions.grammarchecker.");
+		prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+		var server1 = prefs.getCharPref("urlpref1");
+		var server2 = prefs.getCharPref("urlpref2");
+		var lang = this.getLangFromSpellChecker(prefs);
+		this.checkGrammar(server1, lang, function() {
+				grammarchecker.checkGrammar(server2, lang, null);
+			});
 	}
 };
 window.addEventListener(
