@@ -1,0 +1,6 @@
+<!ENTITY prefwindow.title "Grammar Checker preferences">
+<!ENTITY pane1.title "Grammar Checker preferences">
+<!ENTITY urlpref.label "LanguageTool server">
+<!ENTITY urlpref.accesskey "S">
+<!ENTITY langpref.label "Default language">
+<!ENTITY langpref.accesskey "L">
