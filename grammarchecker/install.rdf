@@ -4,7 +4,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>grammarchecker@codedgers.com</em:id>
     <em:name>Grammar Checker</em:name>
-    <em:version>0.4</em:version>
+    <em:version>0.5</em:version>
     <em:creator>Alexander Slesarev</em:creator>
     <em:optionsURL>chrome://grammarchecker/content/options.xul</em:optionsURL>
 	<em:description>Checks grammar using LanguageTool facilities.</em:description>
