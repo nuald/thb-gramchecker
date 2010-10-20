@@ -35,8 +35,8 @@
  * ***** END LICENSE BLOCK ***** */
 
 if ("undefined" == typeof(grammarchecker)) {
-    const Cc = Components.classes;
-    const Ci = Components.interfaces;
+    let Cc = Components.classes;
+    let Ci = Components.interfaces;
     var grammarchecker = {
         onLoad: function() {
             this._overlayCss = "chrome://grammarchecker/skin/overlay.css";
@@ -70,15 +70,25 @@ if ("undefined" == typeof(grammarchecker)) {
                 this._prepareEditor(editor);
             }
         },
+        _getResolver: function(xmlDoc) {
+            let element = null;
+            if (xmlDoc.ownerDocument == null) {
+                element = xmlDoc.documentElement;
+            } else {
+                element = xmlDoc.ownerDocument.documentElement;
+            }
+            return xmlDoc.createNSResolver(element);
+        },
         _prepareEditor: function(editor) {
             editor.QueryInterface(nsIEditorStyleSheets);
             editor.addOverrideStyleSheet(this._overlayCss);
             let xmlDoc = editor.document;
-            let nsResolver = xmlDoc.createNSResolver(
-                                                     xmlDoc.ownerDocument == null ? xmlDoc.documentElement : xmlDoc.ownerDocument.documentElement);
-
+            let nsResolver = this._getResolver(xmlDoc);
             let getPath = function() {
-                return xmlDoc.evaluate("//span[@class='grammarchecker-highlight']", xmlDoc, nsResolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null).singleNodeValue;
+                let cls = "//span[@class='grammarchecker-highlight']";
+                return xmlDoc.evaluate(cls, xmlDoc, nsResolver,
+                                       XPathResult.ANY_UNORDERED_NODE_TYPE,
+                                       null).singleNodeValue;
             };
             let node = getPath();
             while (node != null) {
@@ -106,18 +116,21 @@ if ("undefined" == typeof(grammarchecker)) {
             }
             return s;
         },
+        _getContent: function(item, attr) {
+            return item.attributes[attr].textContent;
+        },
         _createDescription: function(item, li) {
             this._nodesMapping.init();
             let editor = GetCurrentEditor();
             let s = editor.selection;
 
-            let context = item.attributes["context"].textContent;
-            let offset = parseInt(item.attributes["contextoffset"].textContent);
-            let len = parseInt(item.attributes["errorlength"].textContent);
+            let context = this._getContent(item, "context");
+            let offset = parseInt(this._getContent(item, "contextoffset"));
+            let len = parseInt(this._getContent(item, "errorlength"));
 
-            let fromx = parseInt(item.attributes["fromx"].textContent);
-            let fromy = parseInt(item.attributes["fromy"].textContent);
-            let tox = parseInt(item.attributes["tox"].textContent) - 1;
+            let fromx = parseInt(this._getContent(item, "fromx"));
+            let fromy = parseInt(this._getContent(item, "fromy"));
+            let tox = parseInt(this._getContent(item, "tox")) - 1;
 
             if (!this._isInRanges(fromx, tox, fromy)) {
                 let startItem = this._nodesMapping.findNode(fromx, fromy);
@@ -129,7 +142,8 @@ if ("undefined" == typeof(grammarchecker)) {
                     range.setEnd(endItem.node, endItem.offset);
                     let s = this._prepareSelection();
                     s.addRange(range);
-                    let atomService = Cc["@mozilla.org/atom-service;1"].getService(Ci.nsIAtomService);
+                    let atomS = "@mozilla.org/atom-service;1";
+                    let atomService = Cc[atomS].getService(Ci.nsIAtomService);
                     let span = atomService.getAtom("span");
                     editor.QueryInterface(nsIHTMLEditor);
                     editor.setInlineProperty(span, "class",
@@ -157,8 +171,8 @@ if ("undefined" == typeof(grammarchecker)) {
         },
         _addRule: function(item, ul) {
             let that = this;
-            let msg = item.attributes["msg"].textContent;
-            let replacements = item.attributes["replacements"].textContent;
+            let msg = this._getContent(item, "msg");
+            let replacements = this._getContent(item, "replacements");
             let append = function(labelId, text) {
                 let li = document.createElement("li");
                 let label = that._strings.getString(labelId);
@@ -185,11 +199,10 @@ if ("undefined" == typeof(grammarchecker)) {
             this._prepareSelection();
         },
         _showResult: function(xmlDoc) {
-            let nsResolver = xmlDoc.createNSResolver(
-                                                     xmlDoc.ownerDocument == null ? xmlDoc.documentElement : xmlDoc.ownerDocument.documentElement);
-
+            let nsResolver = this._getResolver(xmlDoc);
+            let unordered = XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE;
             let nodes = xmlDoc.evaluate('/matches/error', xmlDoc, nsResolver,
-                                        XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null );
+                                        unordered, null);
 
             if (nodes.snapshotLength > 0) {
                 this._showNodes(nodes);
@@ -258,9 +271,9 @@ if ("undefined" == typeof(grammarchecker)) {
         },
         onMenuItemCommand: function(e) {
             let that = this;
-            let prefs = Cc["@mozilla.org/preferences-service;1"]
-		    .getService(Ci.nsIPrefService)
-		    .getBranch("extensions.grammarchecker.");
+            let prefS = "@mozilla.org/preferences-service;1";
+            let prefSrv = Cc[prefS].getService(Ci.nsIPrefService);
+            let prefs = prefSrv.getBranch("extensions.grammarchecker.");
             prefs.QueryInterface(Ci.nsIPrefBranch2);
             let server1 = prefs.getCharPref("urlpref1");
             let server2 = prefs.getCharPref("urlpref2");
