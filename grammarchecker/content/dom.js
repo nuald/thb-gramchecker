@@ -49,22 +49,22 @@ function NodesMapping() {
 		this.counterX = 0;
 		this.counterY = 0;
 		this.nodes[0] = {};
-		var editor = GetCurrentEditor();
-		var root = editor.rootElement;
+		let editor = GetCurrentEditor();
+		let root = editor.rootElement;
 		return this.parseNodes("", root);
 	};
 
 	this.parseNodes = function(result, root) {
-		var i = 0;
+		let i = 0;
 		for (i = 0; i < root.childNodes.length; i++) {
-			var item = root.childNodes[i];
+			let item = root.childNodes[i];
 			if (item.nodeType == Node.TEXT_NODE) {
-				var text = this.trim(item.textContent);
+				let text = this.trim(item.textContent);
 				if (text.length > 0) {
 					result += text;
-					var previousX = this.counterX;
+					let previousX = this.counterX;
 					this.counterX = previousX + text.length;
-					var currentNodes = this.nodes[this.counterY];
+					let currentNodes = this.nodes[this.counterY];
 					currentNodes[previousX + "," + this.counterX] = item;
 				}
 			} else if (item.localName.toUpperCase() == "BR") {
@@ -82,13 +82,13 @@ function NodesMapping() {
 	};
 
 	this.findNode = function(x, y) {
-		var currentNodes = this.nodes[y];
-		for (var key in currentNodes) {
-			var range = key.split(",");
-			var left = parseInt(range[0]);
-			var right = parseInt(range[1]);
+		let currentNodes = this.nodes[y];
+		for (let key in currentNodes) {
+			let range = key.split(",");
+			let left = parseInt(range[0]);
+			let right = parseInt(range[1]);
 			if (x >= left && x < right) {
-				var item = {};
+				let item = {};
 				item["node"] = currentNodes[key];
 				item["offset"] = x - left;
 				return item;
