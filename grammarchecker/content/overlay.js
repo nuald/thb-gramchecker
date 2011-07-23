@@ -14,11 +14,11 @@
  * The Original Code is Grammar Checker.
  *
  * The Initial Developer of the Original Code is
- * Alexander Slesarev.
+ * Alexander Slesarev <alex.slesarev@gmail.com>.
  * Portions created by the Initial Developer are Copyright (C) 2009
  * the Initial Developer. All Rights Reserved.
  *
- * Contributor(s):
+ * Contributor(s): Alexander Slesarev <alex.slesarev@gmail.com>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -47,7 +47,7 @@ if ("undefined" == typeof(grammarchecker)) {
             let that = this;
             let nsGrammarCommand = {
                 isCommandEnabled: function(aCommand, dummy) {
-                    return (IsDocumentEditable() &&	!IsInHTMLSourceMode());
+                    return (IsDocumentEditable() && !IsInHTMLSourceMode());
                 },
                 getCommandStateParams: function(aCommand, aParams, aRefCon) {},
                 doCommandParams: function(aCommand, aParams, aRefCon) {},
