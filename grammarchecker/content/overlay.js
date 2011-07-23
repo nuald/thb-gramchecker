@@ -240,7 +240,7 @@ if ("undefined" == typeof(grammarchecker)) {
                 return prefs.getCharPref("langpref");
             }
         },
-        _checkGrammar: function(server, lang, errorHandler) {
+        _checkGrammar: function(server, lang, mothertongue, errorHandler) {
             let that = this;
             this._showText("processingMessage"," "+server+" ["+lang+"] ...");
 
@@ -263,7 +263,11 @@ if ("undefined" == typeof(grammarchecker)) {
                 }
             };
             try {
-                req.send("language=" + lang + "&text=" + htmlSource);
+		let uri = "language=" + lang + "&text=" + htmlSource;
+		if (mothertongue.lenght > 0) {
+			uri = "motherTongue=" + mothertongue + uri;
+		}
+                req.send(uri);
             } catch (ex) {
                 this._showError("errorMessage");
                 errorHandler();
@@ -278,8 +282,9 @@ if ("undefined" == typeof(grammarchecker)) {
             let server1 = prefs.getCharPref("urlpref1");
             let server2 = prefs.getCharPref("urlpref2");
             let lang = this._getLangFromSpellChecker(prefs);
-            this._checkGrammar(server1, lang, function() {
-                    that._checkGrammar(server2, lang, null);
+            let mothertongue = prefs.getCharPref("mothertongue");
+            this._checkGrammar(server1, lang, mothertongue, function() {
+                    that._checkGrammar(server2, lang, mothertongue, null);
                 });
         }
     };

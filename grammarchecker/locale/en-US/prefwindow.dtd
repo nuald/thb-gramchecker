@@ -6,3 +6,5 @@
 <!ENTITY urlpref2.accesskey "S">
 <!ENTITY langpref.label "Default language:">
 <!ENTITY langpref.accesskey "L">
+<!ENTITY mothertongue.label "Mother tongue:">
+<!ENTITY mothertongue.accesskey "M">
