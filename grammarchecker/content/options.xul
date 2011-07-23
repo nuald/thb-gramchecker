@@ -43,9 +43,11 @@
       <preference id="urlpref1" name="extensions.grammarchecker.urlpref1" type="string"/>
       <preference id="urlpref2" name="extensions.grammarchecker.urlpref2" type="string"/>
       <preference id="langpref" name="extensions.grammarchecker.langpref" type="string"/>
+      <preference id="mothertongue" name="extensions.grammarchecker.mothertongue" type="string"/>
     </preferences>
     <label accesskey="&urlpref1.accesskey;" control="texturlpref1">&urlpref1.label;</label><textbox id="texturlpref1" preference="urlpref1"/>
     <label accesskey="&urlpref2.accesskey;" control="texturlpref2">&urlpref2.label;</label><textbox id="texturlpref2" preference="urlpref2"/>
     <label accesskey="&langpref.accesskey;" control="textlangpref">&langpref.label;</label><textbox id="textlangpref" preference="langpref"/>
+    <label accesskey="&mothertongue.accesskey;" control="textmothertongue">&mothertongue.label;</label><textbox id="textmothertongue" preference="mothertongue"/>
   </prefpane>
 </prefwindow>
