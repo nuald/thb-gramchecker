@@ -14,11 +14,11 @@
  * The Original Code is Grammar Checker.
  *
  * The Initial Developer of the Original Code is
- * Alexander Slesarev.
+ * Alexander Slesarev <alex.slesarev@gmail.com>.
  * Portions created by the Initial Developer are Copyright (C) 2009
  * the Initial Developer. All Rights Reserved.
  *
- * Contributor(s):
+ * Contributor(s): Alexander Slesarev <alex.slesarev@gmail.com>
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -56,7 +56,7 @@ function NodesMapping() {
 
 	this.parseNodes = function(result, root) {
 		let i = 0;
-		for (i = 0; i < root.childNodes.length; i++) {
+		for (i = 0; i < root.childNodes.length; ++i) {
 			let item = root.childNodes[i];
 			if (item.nodeType == Node.TEXT_NODE) {
 				let text = this.trim(item.textContent);
