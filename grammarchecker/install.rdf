@@ -4,6 +4,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>grammarchecker@codedgers.com</em:id>
     <em:name>Grammar Checker</em:name>
+    <em:type>2</em:type>
     <em:version>0.6</em:version>
     <em:creator>Alexander Slesarev</em:creator>
     <em:optionsURL>chrome://grammarchecker/content/options.xul</em:optionsURL>
