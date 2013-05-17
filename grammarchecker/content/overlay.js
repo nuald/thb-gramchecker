@@ -57,11 +57,11 @@ if ("undefined" == typeof(grammarchecker)) {
             };
             let commandTable = GetComposerCommandTable();
             commandTable.registerCommand("cmd_grammar", nsGrammarCommand);
-	    this.addBtnByDefault();
+            this.addBtnByDefault();
         },
-	addBtnByDefault: function() {
-	    var myId = "grammarchecker-toolbar-button"; // ID of button to add
-	    var afterId = "spellingButton"; // ID of element to insert after
+        addBtnByDefault: function() {
+            var myId = "grammarchecker-toolbar-button"; // ID of button to add
+            var afterId = "spellingButton"; // ID of element to insert after
             var navBar  = document.getElementById("composeToolbar2");
             var curSet  = navBar.currentSet.split(",");
 
@@ -69,15 +69,15 @@ if ("undefined" == typeof(grammarchecker)) {
                 var pos = curSet.indexOf(afterId) + 1 || curSet.length;
                 var set = curSet.slice(0, pos).concat(myId).concat(curSet.slice(pos));
 
-	        navBar.setAttribute("currentset", set.join(","));
-	        navBar.currentSet = set.join(",");
-	        document.persist(navBar.id, "currentset");
-	        try {
-	            BrowserToolboxCustomizeDone(true);
-	        }
-	        catch (e) {}
-	    }	
-	},
+                navBar.setAttribute("currentset", set.join(","));
+                navBar.currentSet = set.join(",");
+                document.persist(navBar.id, "currentset");
+                try {
+                    BrowserToolboxCustomizeDone(true);
+                }
+                catch (e) {}
+            }
+        },
         clearPreview: function() {
             let preview = document.getElementById("grammarchecker-preview");
             while (preview.firstChild) {
@@ -155,7 +155,7 @@ if ("undefined" == typeof(grammarchecker)) {
             if (!this._isInRanges(fromx, tox, fromy)) {
                 let startItem = this._nodesMapping.findNode(fromx, fromy);
                 let endItem = this._nodesMapping.findNode(tox, fromy);
-		
+
                 if (startItem != null && endItem != null) {
                     let range = document.createRange();
                     range.setStart(startItem.node, startItem.offset);
@@ -283,10 +283,10 @@ if ("undefined" == typeof(grammarchecker)) {
                 }
             };
             try {
-		let uri = "language=" + lang + "&text=" + htmlSource;
-		if (mothertongue.lenght > 0) {
-			uri = "motherTongue=" + mothertongue + uri;
-		}
+                let uri = "language=" + lang + "&text=" + htmlSource;
+                if (mothertongue.lenght > 0) {
+                    uri = "motherTongue=" + mothertongue + uri;
+                }
                 req.send(uri);
             } catch (ex) {
                 this._showError("errorMessage");
@@ -295,22 +295,20 @@ if ("undefined" == typeof(grammarchecker)) {
         },
         onMenuItemCommand: function(e) {
             let that = this;
-            let prefS = "@mozilla.org/preferences-service;1";
-            let prefSrv = Cc[prefS].getService(Ci.nsIPrefService);
-            let prefs = prefSrv.getBranch("extensions.grammarchecker.");
-            prefs.QueryInterface(Ci.nsIPrefBranch2);
+            var prefs = Cc["@mozilla.org/preferences-service;1"]
+                .getService(Components.interfaces.nsIPrefService)
+                .getBranch("extensions.grammarchecker.");
             let server1 = prefs.getCharPref("urlpref1");
             let server2 = prefs.getCharPref("urlpref2");
             let lang = this._getLangFromSpellChecker(prefs);
             let mothertongue = prefs.getCharPref("mothertongue");
             this._checkGrammar(server1, lang, mothertongue, function() {
-                    that._checkGrammar(server2, lang, mothertongue, null);
-                });
+                that._checkGrammar(server2, lang, mothertongue, null);
+            });
         }
     };
 };
-window.addEventListener("load",function(e) { grammarchecker.onLoad(e); },
-                        false);
-window.addEventListener("compose-window-init",
-                        function() { grammarchecker.clearPreview(); },
-                        true);
+window.addEventListener(
+    "load",function(e) { grammarchecker.onLoad(e); }, false);
+window.addEventListener(
+    "compose-window-init", function() { grammarchecker.clearPreview(); }, true);
