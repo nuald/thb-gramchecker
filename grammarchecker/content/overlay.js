@@ -90,34 +90,13 @@ if ("undefined" == typeof(grammarchecker)) {
                 this._prepareEditor(editor);
             }
         },
-        _getResolver: function(xmlDoc) {
-            let element = null;
-            if (xmlDoc.ownerDocument == null) {
-                element = xmlDoc.documentElement;
-            } else {
-                element = xmlDoc.ownerDocument.documentElement;
-            }
-            return xmlDoc.createNSResolver(element);
-        },
         _prepareEditor: function(editor) {
-            editor.QueryInterface(nsIEditorStyleSheets);
+            editor.QueryInterface(Ci.nsIEditorStyleSheets);
             editor.addOverrideStyleSheet(this._overlayCss);
-            let xmlDoc = editor.document;
-            let nsResolver = this._getResolver(xmlDoc);
-            let getPath = function() {
-                let cls = "//span[@class='grammarchecker-highlight']";
-                return xmlDoc.evaluate(cls, xmlDoc, nsResolver,
-                                       XPathResult.ANY_UNORDERED_NODE_TYPE,
-                                       null).singleNodeValue;
-            };
-            let node = getPath();
-            while (node != null) {
-                let s = this._prepareSelection();
-                let range = xmlDoc.createRange();
-                range.selectNode(node);
-                s.addRange(range);
-                editor.removeInlineProperty("span", "class");
-                node = getPath();
+            let doc = editor.document;
+            var matches = doc.querySelectorAll("span[class='grammarchecker-highlight']");
+            for (var i = matches.length - 1; i >= 0; i--) {
+                matches[i].removeAttribute('class');
             }
         },
         _isInRanges: function(fromx, tox, y) {
@@ -137,16 +116,17 @@ if ("undefined" == typeof(grammarchecker)) {
             return s;
         },
         _getContent: function(item, attr) {
-            return item.attributes[attr].textContent;
+            return item[attr];
         },
         _createDescription: function(item, li) {
             this._nodesMapping.init();
             let editor = GetCurrentEditor();
             let s = editor.selection;
 
-            let context = this._getContent(item, "context");
-            let offset = parseInt(this._getContent(item, "contextoffset"));
-            let len = parseInt(this._getContent(item, "errorlength"));
+            let contextItem = this._getContent(item, "context");
+            let offset = parseInt(this._getContent(contextItem, "offset"));
+            let len = parseInt(this._getContent(contextItem, "length"));
+            var context = this._getContent(contextItem, "text")
 
             let fromx = parseInt(this._getContent(item, "fromx"));
             let fromy = parseInt(this._getContent(item, "fromy"));
@@ -191,8 +171,17 @@ if ("undefined" == typeof(grammarchecker)) {
         },
         _addRule: function(item, ul) {
             let that = this;
-            let msg = this._getContent(item, "msg");
-            let replacements = this._getContent(item, "replacements");
+            let msg = this._getContent(item, "message");
+            let replacementsList = this._getContent(item, "replacements");
+            var replacements = "", first = true;
+            for (var i = replacementsList.length - 1; i >= 0; i--) {
+                if (first) {
+                    first = false;
+                } else {
+                    replacements += ', ';
+                }
+                replacements += replacementsList[i].value;
+            }
             let append = function(labelId, text) {
                 let li = document.createElement("li");
                 let label = that._strings.getString(labelId);
@@ -207,8 +196,8 @@ if ("undefined" == typeof(grammarchecker)) {
             let preview=document.getElementById("grammarchecker-preview");
             let ul = document.createElement("ul");
             preview.appendChild(ul);
-            for (let i = 0; i < nodes.snapshotLength; i++) {
-                let item = nodes.snapshotItem(i);
+            for (let i = 0; i < nodes.length; i++) {
+                let item = nodes[i];
                 let li = document.createElement("li");
                 this._createDescription(item, li);
                 ul.appendChild(li);
@@ -218,13 +207,10 @@ if ("undefined" == typeof(grammarchecker)) {
             }
             this._prepareSelection();
         },
-        _showResult: function(xmlDoc) {
-            let nsResolver = this._getResolver(xmlDoc);
-            let unordered = XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE;
-            let nodes = xmlDoc.evaluate('/matches/error', xmlDoc, nsResolver,
-                                        unordered, null);
+        _showResult: function(json) {
+            let nodes = JSON.parse(json).matches;
 
-            if (nodes.snapshotLength > 0) {
+            if (nodes.length > 0) {
                 this._showNodes(nodes);
             } else {
                 this._showText("noErrorsMessage", null);
@@ -268,12 +254,12 @@ if ("undefined" == typeof(grammarchecker)) {
             let htmlSource = encodeURIComponent(this._nodesMapping.init());
             let xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"];
             let req = xhr.createInstance(Ci.nsIXMLHttpRequest);
-            req.open('POST', server, true);
-            req.setRequestHeader('Content-Type',
-                                 'application/x-www-form-urlencoded');
+            req.open('POST', server + "/v2/check", true);
+            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            req.setRequestHeader('Accept', 'application/json');
             req.onreadystatechange = function(){
                 if (req.readyState == 4) {
-                    let result = req.responseXML;
+                    let result = req.responseText;
                     if (result == null) {
                         that._showError("errorMessage");
                         errorHandler();
@@ -296,7 +282,7 @@ if ("undefined" == typeof(grammarchecker)) {
         onMenuItemCommand: function(e) {
             let that = this;
             var prefs = Cc["@mozilla.org/preferences-service;1"]
-                .getService(Components.interfaces.nsIPrefService)
+                .getService(Ci.nsIPrefService)
                 .getBranch("extensions.grammarchecker.");
             let server1 = prefs.getCharPref("urlpref1");
             let server2 = prefs.getCharPref("urlpref2");
