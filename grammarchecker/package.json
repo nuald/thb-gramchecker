@@ -1,0 +1,17 @@
+{
+  "name": "thb-gramchecker",
+  "version": "0.7.0",
+  "description": "Thunderbird Grammar Checker",
+  "devDependencies": {
+    "eslint": "^3.18.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nuald/thb-gramchecker.git"
+  },
+  "author": "Alexander Slesarev",
+  "bugs": {
+    "url": "https://github.com/nuald/thb-gramchecker/issues"
+  },
+  "homepage": "http://nuald.blogspot.com/2009/10/thunderbird-grammar-checker-extension.html"
+}

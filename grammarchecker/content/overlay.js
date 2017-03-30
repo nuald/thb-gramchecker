@@ -34,6 +34,9 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
+/* globals Components, NodesMapping, IsDocumentEditable, IsInHTMLSourceMode,
+GetComposerCommandTable, GetCurrentEditor */
+
 if ("undefined" == typeof(grammarchecker)) {
     let Cc = Components.classes;
     let Ci = Components.interfaces;
@@ -46,11 +49,11 @@ if ("undefined" == typeof(grammarchecker)) {
 
             let that = this;
             let nsGrammarCommand = {
-                isCommandEnabled: function(aCommand, dummy) {
-                    return (IsDocumentEditable() && !IsInHTMLSourceMode());
+                isCommandEnabled: function() {
+                    return IsDocumentEditable() && !IsInHTMLSourceMode();
                 },
-                getCommandStateParams: function(aCommand, aParams, aRefCon) {},
-                doCommandParams: function(aCommand, aParams, aRefCon) {},
+                getCommandStateParams: function() {},
+                doCommandParams: function() {},
                 doCommand: function(aCommand) {
                     that.onMenuItemCommand(aCommand);
                 }
@@ -72,10 +75,6 @@ if ("undefined" == typeof(grammarchecker)) {
                 navBar.setAttribute("currentset", set.join(","));
                 navBar.currentSet = set.join(",");
                 document.persist(navBar.id, "currentset");
-                try {
-                    BrowserToolboxCustomizeDone(true);
-                }
-                catch (e) {}
             }
         },
         clearPreview: function() {
@@ -83,7 +82,7 @@ if ("undefined" == typeof(grammarchecker)) {
             while (preview.firstChild) {
                 //The list is LIVE so it will re-index each call
                 preview.removeChild(preview.firstChild);
-            };
+            }
             this._ranges = [];
             let editor = GetCurrentEditor();
             if (editor != null) {
@@ -121,7 +120,6 @@ if ("undefined" == typeof(grammarchecker)) {
         _createDescription: function(item, li) {
             this._nodesMapping.init();
             let editor = GetCurrentEditor();
-            let s = editor.selection;
 
             let contextItem = this._getContent(item, "context");
             let offset = parseInt(this._getContent(contextItem, "offset"));
@@ -145,7 +143,7 @@ if ("undefined" == typeof(grammarchecker)) {
                     let atomS = "@mozilla.org/atom-service;1";
                     let atomService = Cc[atomS].getService(Ci.nsIAtomService);
                     let span = atomService.getAtom("span");
-                    editor.QueryInterface(nsIHTMLEditor);
+                    editor.QueryInterface(Ci.nsIHTMLEditor);
                     editor.setInlineProperty(span, "class",
                                              "grammarchecker-highlight");
                 }
@@ -260,7 +258,7 @@ if ("undefined" == typeof(grammarchecker)) {
             req.onreadystatechange = function(){
                 if (req.readyState == 4) {
                     let result = req.responseText;
-                    if (result == null) {
+                    if (!result) {
                         that._showError("errorMessage");
                         errorHandler();
                     } else {
@@ -279,7 +277,7 @@ if ("undefined" == typeof(grammarchecker)) {
                 errorHandler();
             }
         },
-        onMenuItemCommand: function(e) {
+        onMenuItemCommand: function() {
             let that = this;
             var prefs = Cc["@mozilla.org/preferences-service;1"]
                 .getService(Ci.nsIPrefService)
@@ -293,7 +291,7 @@ if ("undefined" == typeof(grammarchecker)) {
             });
         }
     };
-};
+}
 window.addEventListener(
     "load",function(e) { grammarchecker.onLoad(e); }, false);
 window.addEventListener(
