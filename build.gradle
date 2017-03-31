@@ -3,8 +3,8 @@ plugins {
 }
 
 task npm(type: Exec) {
-	executable "npm"
-	args "install"
+  executable "npm"
+  args "install"
 }
 
 eslint {
@@ -14,8 +14,8 @@ eslint {
 eslint.dependsOn(npm)
 
 task test(type: Exec) {
-    executable "./node_modules/mocha/bin/mocha"
-    dependsOn eslint
+  executable "./node_modules/mocha/bin/mocha"
+  dependsOn eslint
 }
 
 task build(type: Zip) {
