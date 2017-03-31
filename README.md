@@ -1,8 +1,13 @@
 # Thunderbird Grammar Checker
 Thunderbird extension for checking grammar using LanguageTool facilities. This extension is compatible only with Thunderbird 1.5 and above.
 
-Homepage: [Thunderbird Grammar Checker extension
-](http://nuald.blogspot.com/2009/10/thunderbird-grammar-checker-extension.html)
+Homepage: [Thunderbird Grammar Checker extension](http://nuald.blogspot.com/2009/10/thunderbird-grammar-checker-extension.html)
+
+[Supported languages](https://www.languagetool.org/languages/): English (en), Dutch (nl), French (fr),
+German (de), Italian (it), Polish (pl), Romanian (ro), Russian (ru),
+Slovak (sk), Slovenian (sl), Spanish (es), Swedish (sv), Ukrainian (uk), Asturian (ast), Belarusian (be),
+Breton (br), Catalan (ca), Chinese (zh), Danish (da), Esperanto (eo), Galician (gl), Greek (el),
+Japanese (ja), Khmer (km), Persian (fa), Portuguese (pt), Tagalog (tl), Tamil (ta).
 
 ## Quick Start
 
