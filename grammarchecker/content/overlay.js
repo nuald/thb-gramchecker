@@ -114,21 +114,18 @@ if ("undefined" == typeof(grammarchecker)) {
             }
             return s;
         },
-        _getContent: function(item, attr) {
-            return item[attr];
-        },
         _createDescription: function(item, li) {
             this._nodesMapping.init();
             let editor = GetCurrentEditor();
 
-            let contextItem = this._getContent(item, "context");
-            let offset = parseInt(this._getContent(contextItem, "offset"));
-            let len = parseInt(this._getContent(contextItem, "length"));
-            var context = this._getContent(contextItem, "text")
+            let contextItem = item.context;
+            let offset = parseInt(contextItem.offset);
+            let len = parseInt(contextItem.length);
+            var context = contextItem.text;
 
-            let fromx = parseInt(this._getContent(item, "fromx"));
-            let fromy = parseInt(this._getContent(item, "fromy"));
-            let tox = parseInt(this._getContent(item, "tox")) - 1;
+            let fromx = parseInt(item.fromx);
+            let fromy = parseInt(item.fromy);
+            let tox = parseInt(item.tox) - 1;
 
             if (!this._isInRanges(fromx, tox, fromy)) {
                 let startItem = this._nodesMapping.findNode(fromx, fromy);
@@ -169,8 +166,8 @@ if ("undefined" == typeof(grammarchecker)) {
         },
         _addRule: function(item, ul) {
             let that = this;
-            let msg = this._getContent(item, "message");
-            let replacementsList = this._getContent(item, "replacements");
+            let msg = item.message;
+            let replacementsList = item.replacements;
             var replacements = "", first = true;
             for (var i = replacementsList.length - 1; i >= 0; i--) {
                 if (first) {

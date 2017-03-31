@@ -28,4 +28,5 @@ The sample instructions:
 In general, please follow the [Thunderbird extensions](https://developer.mozilla.org/en-US/Add-ons/Thunderbird) official documentations. There are several [Gradle](https://gradle.org/) tasks specified to make the development easier:
 
 - `gradle eslint` __[Run ESLint check for the JS files]__
-- `gradle xpi` __[Package the XPI file for the deployment]__
+- `gradle test` __[Run Mocha unit-tests]__
+- `gradle build` __[Build the XPI file for the deployment]__

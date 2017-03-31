@@ -2,17 +2,27 @@ plugins {
   id "com.github.scobal.eslint" version "1.0.2"
 }
 
+task npm(type: Exec) {
+	executable "npm"
+	args "install"
+}
 
 eslint {
   inputs = ["grammarchecker/**/*.js"]
   executable = "./node_modules/.bin/eslint"
 }
+eslint.dependsOn(npm)
 
-task xpi(type: Zip) {
+task test(type: Exec) {
+    executable "./node_modules/mocha/bin/mocha"
+    dependsOn eslint
+}
+
+task build(type: Zip) {
   from "grammarchecker"
   baseName = "grammar_checker"
   version = "0.7"
   classifier = "tb"
   extension = "xpi"
-  dependsOn eslint
+  dependsOn test
 }
