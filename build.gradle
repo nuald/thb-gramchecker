@@ -1,0 +1,18 @@
+plugins {
+  id "com.github.scobal.eslint" version "1.0.2"
+}
+
+
+eslint {
+  inputs = ["grammarchecker/**/*.js"]
+  executable = "./node_modules/.bin/eslint"
+}
+
+task xpi(type: Zip) {
+  from "grammarchecker"
+  baseName = "grammar_checker"
+  version = "0.7"
+  classifier = "tb"
+  extension = "xpi"
+  dependsOn eslint
+}

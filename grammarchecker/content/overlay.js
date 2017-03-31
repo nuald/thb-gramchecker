@@ -258,11 +258,11 @@ if ("undefined" == typeof(grammarchecker)) {
             req.onreadystatechange = function(){
                 if (req.readyState == 4) {
                     let result = req.responseText;
-                    if (!result) {
+                    if (result) {
+                        that._showResult(result);
+                    } else {
                         that._showError("errorMessage");
                         errorHandler();
-                    } else {
-                        that._showResult(result);
                     }
                 }
             };
