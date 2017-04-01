@@ -1,21 +1,18 @@
 plugins {
-  id "com.github.scobal.eslint" version "1.0.2"
+  id "com.moowork.node" version "1.1.1"
 }
 
-task npm(type: Exec) {
-  executable "npm"
-  args "install"
+node {
+  download = true
 }
 
-eslint {
-  inputs = ["grammarchecker/**/*.js"]
-  executable = "./node_modules/.bin/eslint"
+task eslint(type: NodeTask, dependsOn: npm_install) {
+    script = file('./node_modules/.bin/eslint')
+    args = ["grammarchecker/**/*.js"]
 }
-eslint.dependsOn(npm)
 
-task test(type: Exec) {
-  executable "./node_modules/mocha/bin/mocha"
-  dependsOn eslint
+task test(type: NodeTask, dependsOn: eslint) {
+  script = file("./node_modules/mocha/bin/mocha")
 }
 
 task build(type: Zip) {
