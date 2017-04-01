@@ -7,8 +7,8 @@ node {
 }
 
 task eslint(type: NodeTask, dependsOn: npm_install) {
-    script = file('./node_modules/.bin/eslint')
-    args = ["grammarchecker/**/*.js"]
+  script = file('./node_modules/.bin/eslint')
+  args = ["grammarchecker/**/*.js"]
 }
 
 task test(type: NodeTask, dependsOn: eslint) {
