@@ -16,5 +16,12 @@
         <em:maxVersion>56.0</em:maxVersion>
       </Description>
     </em:targetApplication>
+	<em:targetApplication>
+	    <Description>
+			<em:id>postbox@postbox-inc.com</em:id> <!-- postbox -->
+		    <em:minVersion>4.0</em:minVersion>
+	        <em:maxVersion>5.*</em:maxVersion>
+		</Description>
+	</em:targetApplication>
   </Description>
 </RDF>
