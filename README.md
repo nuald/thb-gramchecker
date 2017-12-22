@@ -1,7 +1,8 @@
 # Thunderbird Grammar Checker
+
 Thunderbird add-on for checking grammar using LanguageTool.
 
-Official Thunderbird Grammar Checker add-on: [https://addons.mozilla.org/thunderbird/addon/14781](https://addons.mozilla.org/thunderbird/addon/14781)
+Official Thunderbird Grammar Checker add-on: [https://addons.mozilla.org/thunderbird/addon/grammar-checker/](https://addons.mozilla.org/thunderbird/addon/grammar-checker/)
 
 [Supported languages](https://www.languagetool.org/languages/): English (en), Dutch (nl), French (fr),
 German (de), Italian (it), Polish (pl), Romanian (ro), Russian (ru),
@@ -18,9 +19,9 @@ To use the local server, please [download](https://languagetool.org/) the stand-
 
 The sample instructions:
 
-    $ wget https://languagetool.org/download/LanguageTool-3.7.zip
-    $ unzip LanguageTool-3.7.zip
-    $ cd LanguageTool-3.7
+    $ wget https://languagetool.org/download/LanguageTool-3.9.zip
+    $ unzip LanguageTool-3.9.zip
+    $ cd LanguageTool-3.9
     $ java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port 8081
 
 ## Development

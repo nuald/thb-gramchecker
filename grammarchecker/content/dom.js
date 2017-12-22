@@ -34,7 +34,7 @@ var NodesMapping = function() {
                     let currentNodes = this.nodes[this.counterY];
                     currentNodes[previousX + "," + this.counterX] = item;
                 }
-			} else if (!!item.localName && item.localName.toUpperCase() == "BR")  {
+            } else if (Boolean(item.localName) && item.localName.toUpperCase() == "BR")  {
                 if (this.counterX > 0) {
                     value += "\n";
                     this.counterY += 1;

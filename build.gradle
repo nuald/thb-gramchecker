@@ -1,5 +1,5 @@
 plugins {
-  id "com.moowork.node" version "1.1.1"
+  id "com.moowork.node" version "1.2.0"
 }
 
 node {
@@ -18,7 +18,7 @@ task test(type: NodeTask, dependsOn: eslint) {
 task build(type: Zip) {
   from "grammarchecker"
   baseName = "grammar_checker"
-  version = "0.7"
+  version = "0.7.1"
   classifier = "tb"
   extension = "xpi"
   dependsOn test
