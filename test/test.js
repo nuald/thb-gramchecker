@@ -9,13 +9,18 @@ const elem = {
 
 }
 
-const TEXT_NODE = 1;
+const ELEMENT_NODE = 1;
+const TEXT_NODE = 3;
 
 const doc = {
     childNodes: [
         {
             nodeType: TEXT_NODE,
             textContent: "content"
+        },
+        {
+            nodeType: ELEMENT_NODE,
+            localName: "br"
         }
     ],
     getElementById: function(id) {
@@ -87,12 +92,13 @@ describe('grammarchecker', function() {
                 assert.equal(url, "http://localhost:8081/v2/check");
             };
             XmlHTTPRequest.send = function(uri) {
-                assert.equal(uri, "language=en&text=content");
+                assert.equal(uri, "language=en&text=content%0A");
             };
             sandbox.grammarchecker.onLoad();
             sandbox.grammarchecker._checkGrammar(
-                'http://localhost:8081', 'en', '', function() {
-                    assert.ok(false, "no error handler should have been called");
+                'http://localhost:8081', 'en', '', function(ex) {
+                    assert.ok(false,
+                        "no error handler should have been called, but got " + ex);
                 }
             );
         });

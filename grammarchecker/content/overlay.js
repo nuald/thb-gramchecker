@@ -105,8 +105,7 @@ if ("undefined" == typeof(grammarchecker)) {
                     let atomService = Cc[atomS].getService(Ci.nsIAtomService);
                     let span = atomService.getAtom("span");
                     editor.QueryInterface(Ci.nsIHTMLEditor);
-                    editor.setInlineProperty(span, "class",
-                                             "grammarchecker-highlight");
+                    editor.setInlineProperty(span, "class", "grammarchecker-highlight");
                 }
             }
 
@@ -223,7 +222,7 @@ if ("undefined" == typeof(grammarchecker)) {
                         that._showResult(result);
                     } else {
                         that._showError("errorMessage");
-                        errorHandler();
+                        errorHandler(req.statusText);
                     }
                 }
             };
@@ -235,7 +234,7 @@ if ("undefined" == typeof(grammarchecker)) {
                 req.send(uri);
             } catch (ex) {
                 this._showError("errorMessage");
-                errorHandler();
+                errorHandler(ex);
             }
         },
         onMenuItemCommand: function() {
