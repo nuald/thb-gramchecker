@@ -18,7 +18,7 @@ task test(type: NodeTask, dependsOn: eslint) {
 task build(type: Zip) {
   from "grammarchecker"
   baseName = "grammar_checker"
-  version = "0.7.1"
+  version = "0.8.0"
   classifier = "tb"
   extension = "xpi"
   dependsOn test
