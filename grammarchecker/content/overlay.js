@@ -210,8 +210,8 @@ if ("undefined" == typeof(grammarchecker)) {
 
             //Get the html Source message document
             let htmlSource = encodeURIComponent(this._nodesMapping.init());
-            let xhr = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"];
-            let req = xhr.createInstance(Ci.nsIXMLHttpRequest);
+            Components.utils.importGlobalProperties(["XMLHttpRequest"]);
+            let req = new XMLHttpRequest();
             req.open('POST', server + "/v2/check", true);
             req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             req.setRequestHeader('Accept', 'application/json');

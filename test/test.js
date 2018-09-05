@@ -46,15 +46,12 @@ const XmlHTTPRequest = {
 };
 
 const sandbox = {
+    XMLHttpRequest: function() { return XmlHTTPRequest; },
     Components: {
-        classes: {
-            "@mozilla.org/xmlextras/xmlhttprequest;1": {
-                createInstance: function() {
-                    return XmlHTTPRequest;
-                }
-            }
-        },
-        interfaces: {}
+        interfaces: {},
+        utils: {
+            importGlobalProperties: function() {}
+        }
     },
     Node: {
         TEXT_NODE: TEXT_NODE
