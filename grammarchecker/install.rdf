@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
  xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
     <em:id>grammarchecker@codedgers.com</em:id>
     <em:name>Grammar Checker</em:name>
     <em:type>2</em:type>
-    <em:version>0.8</em:version>
+    <em:version>0.8.1</em:version>
     <em:creator>Alexander Slesarev</em:creator>
     <em:optionsURL>chrome://grammarchecker/content/options.xul</em:optionsURL>
+    <em:optionsType>3</em:optionsType>
     <em:description>Checks grammar using LanguageTool.</em:description>
     <em:targetApplication>
       <Description>
         <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- thunderbird -->
         <em:minVersion>1.5</em:minVersion>
-        <em:maxVersion>60.0</em:maxVersion>
+        <em:maxVersion>*</em:maxVersion>
       </Description>
     </em:targetApplication>
   <em:targetApplication>

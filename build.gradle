@@ -2,23 +2,26 @@ plugins {
   id "com.moowork.node" version "1.2.0"
 }
 
+import static org.apache.tools.ant.taskdefs.condition.Os.*
+
 node {
   download = true
 }
 
-task eslint(type: NodeTask, dependsOn: npm_install) {
-  script = file('./node_modules/.bin/eslint')
-  args = ["grammarchecker/**/*.js"]
+task eslint(type: Exec, dependsOn: npm_install) {
+  def exe_name = isFamily(FAMILY_WINDOWS) ? 'eslint.cmd' : 'eslint'
+  commandLine "./node_modules/.bin/$exe_name", "grammarchecker/**/*.js"
 }
 
-task test(type: NodeTask, dependsOn: eslint) {
-  script = file("./node_modules/mocha/bin/mocha")
+task test(type: Exec, dependsOn: eslint) {
+  def exe_name = isFamily(FAMILY_WINDOWS) ? 'mocha.cmd' : 'mocha'
+  commandLine "./node_modules/.bin/$exe_name"
 }
 
 task build(type: Zip) {
   from "grammarchecker"
   baseName = "grammar_checker"
-  version = "0.8.0"
+  version = "0.8.1"
   classifier = "tb"
   extension = "xpi"
   dependsOn test
