@@ -4,11 +4,35 @@ Thunderbird add-on for checking grammar using LanguageTool.
 
 Official Thunderbird Grammar Checker add-on: [https://addons.mozilla.org/thunderbird/addon/grammar-checker/](https://addons.mozilla.org/thunderbird/addon/grammar-checker/)
 
-[Supported languages](https://www.languagetool.org/languages/): English (en), Dutch (nl), French (fr),
-German (de), Italian (it), Polish (pl), Romanian (ro), Russian (ru),
-Slovak (sk), Slovenian (sl), Spanish (es), Swedish (sv), Ukrainian (uk), Asturian (ast), Belarusian (be),
-Breton (br), Catalan (ca), Chinese (zh), Danish (da), Esperanto (eo), Galician (gl), Greek (el),
-Japanese (ja), Khmer (km), Persian (fa), Portuguese (pt), Tagalog (tl), Tamil (ta).
+[Supported languages](https://www.languagetool.org/languages/): 
+Asturian (ast), 
+Belarusian (be), 
+Breton (br), 
+Catalan (ca), 
+Danish (da), 
+German (de), 
+Greek (el), 
+English (en), 
+Esperanto (eo), 
+Spanish (es), 
+Persian (fa), 
+French (fr),
+Galician (gl), 
+Italian (it), 
+Japanese (ja), 
+Khmer (km), 
+Dutch (nl), 
+Polish (pl), 
+Portuguese (pt), 
+Romanian (ro), 
+Russian (ru), 
+Slovak (sk), 
+Slovenian (sl), 
+Swedish (sv), 
+Tamil (ta),
+Tagalog (tl), 
+Ukrainian (uk), 
+Chinese (zh).
 
 ## Quick Start
 
