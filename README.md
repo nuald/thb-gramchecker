@@ -2,7 +2,7 @@
 
 Thunderbird add-on for checking grammar using LanguageTool.
 
-Official Thunderbird Grammar Checker add-on: [https://addons.mozilla.org/thunderbird/addon/grammar-checker/](https://addons.mozilla.org/thunderbird/addon/grammar-checker/)
+Official Thunderbird Grammar Checker add-on: [https://addons.thunderbird.net/thunderbird/addon/grammar-checker/](https://addons.thunderbird.net/thunderbird/addon/grammar-checker/)
 
 [Supported languages](https://www.languagetool.org/languages/):
 Asturian (ast),
