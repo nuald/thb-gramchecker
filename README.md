@@ -4,34 +4,34 @@ Thunderbird add-on for checking grammar using LanguageTool.
 
 Official Thunderbird Grammar Checker add-on: [https://addons.mozilla.org/thunderbird/addon/grammar-checker/](https://addons.mozilla.org/thunderbird/addon/grammar-checker/)
 
-[Supported languages](https://www.languagetool.org/languages/): 
-Asturian (ast), 
-Belarusian (be), 
-Breton (br), 
-Catalan (ca), 
-Danish (da), 
-German (de), 
-Greek (el), 
-English (en), 
-Esperanto (eo), 
-Spanish (es), 
-Persian (fa), 
+[Supported languages](https://www.languagetool.org/languages/):
+Asturian (ast),
+Belarusian (be),
+Breton (br),
+Catalan (ca),
+Danish (da),
+German (de),
+Greek (el),
+English (en),
+Esperanto (eo),
+Spanish (es),
+Persian (fa),
 French (fr),
-Galician (gl), 
-Italian (it), 
-Japanese (ja), 
-Khmer (km), 
-Dutch (nl), 
-Polish (pl), 
-Portuguese (pt), 
-Romanian (ro), 
-Russian (ru), 
-Slovak (sk), 
-Slovenian (sl), 
-Swedish (sv), 
+Galician (gl),
+Italian (it),
+Japanese (ja),
+Khmer (km),
+Dutch (nl),
+Polish (pl),
+Portuguese (pt),
+Romanian (ro),
+Russian (ru),
+Slovak (sk),
+Slovenian (sl),
+Swedish (sv),
 Tamil (ta),
-Tagalog (tl), 
-Ukrainian (uk), 
+Tagalog (tl),
+Ukrainian (uk),
 Chinese (zh).
 
 ## Quick Start
@@ -43,9 +43,9 @@ To use the local server, please [download](https://languagetool.org/) the stand-
 
 The sample instructions:
 
-    $ wget https://languagetool.org/download/LanguageTool-4.2.zip
-    $ unzip LanguageTool-4.2.zip
-    $ cd LanguageTool-4.2
+    $ wget https://languagetool.org/download/LanguageTool-4.3.zip
+    $ unzip LanguageTool-4.3.zip
+    $ cd LanguageTool-4.3
     $ java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port 8081
 
 ## Development
