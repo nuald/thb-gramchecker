@@ -1,6 +1,6 @@
 # Thunderbird Grammar Checker
 
-Thunderbird add-on for checking grammar using LanguageTool.
+Thunderbird add-on for checking grammar using [LanguageTool](https://www.languagetool.org/).
 
 Official Thunderbird Grammar Checker add-on: [https://addons.thunderbird.net/thunderbird/addon/grammar-checker/](https://addons.thunderbird.net/thunderbird/addon/grammar-checker/)
 
