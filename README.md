@@ -52,6 +52,6 @@ The sample instructions:
 
 In general, please follow the [Thunderbird extensions](https://developer.mozilla.org/en-US/Add-ons/Thunderbird) official documentations. There are several [Gradle](https://gradle.org/) tasks specified to make the development easier:
 
-- Run ESLint check for the JS files: `gradle eslint`
+- Run [ESLint](https://eslint.org/) check for the JS files: `gradle eslint`
 - Run unit-tests: `gradle test`
 - Build the XPI file for the deployment: `gradle build`
