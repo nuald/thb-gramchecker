@@ -1,10 +1,10 @@
 {
   "name": "thb-gramchecker",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "license": "MIT",
   "description": "Thunderbird Grammar Checker",
   "devDependencies": {
-    "eslint": "^5.6.1",
+    "eslint": "^5.7.0",
     "mocha": "^5.2.0"
   },
   "repository": {
@@ -15,5 +15,5 @@
   "bugs": {
     "url": "https://github.com/nuald/thb-gramchecker/issues"
   },
-  "homepage": "http://nuald.blogspot.com/2009/10/thunderbird-grammar-checker-extension.html"
+  "homepage": "https://nuald.blogspot.com/2009/10/thunderbird-grammar-checker-extension.html"
 }

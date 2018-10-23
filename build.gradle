@@ -21,7 +21,7 @@ task test(type: Exec, dependsOn: eslint) {
 task build(type: Zip) {
   from "grammarchecker"
   baseName = "grammar_checker"
-  version = "0.8.2"
+  version = "0.8.3"
   classifier = "tb"
   extension = "xpi"
   dependsOn test
