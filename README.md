@@ -1,6 +1,6 @@
 # Thunderbird Grammar Checker
 
-Thunderbird add-on for checking grammar using LanguageTool.
+Thunderbird add-on for checking grammar using [LanguageTool](https://www.languagetool.org/).
 
 Official Thunderbird Grammar Checker add-on: [https://addons.thunderbird.net/thunderbird/addon/grammar-checker/](https://addons.thunderbird.net/thunderbird/addon/grammar-checker/)
 
@@ -52,6 +52,6 @@ The sample instructions:
 
 In general, please follow the [Thunderbird extensions](https://developer.mozilla.org/en-US/Add-ons/Thunderbird) official documentations. There are several [Gradle](https://gradle.org/) tasks specified to make the development easier:
 
-- Run ESLint check for the JS files: `gradle eslint`
+- Run [ESLint](https://eslint.org/) check for the JS files: `gradle eslint`
 - Run unit-tests: `gradle test`
 - Build the XPI file for the deployment: `gradle build`

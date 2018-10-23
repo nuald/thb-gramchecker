@@ -7,9 +7,12 @@
     <em:type>2</em:type>
     <em:version>0.8.2</em:version>
     <em:creator>Alexander Slesarev</em:creator>
+    <em:translator>Alexander Slesarev (en-US)</em:translator>
+    <em:translator>Óvári (hu)</em:translator>
+    <em:translator>Alexander Slesarev (ru)</em:translator>
     <em:optionsURL>chrome://grammarchecker/content/options.xul</em:optionsURL>
     <em:optionsType>3</em:optionsType>
-    <em:description>Checks grammar using LanguageTool.</em:description>
+    <em:description>Checks grammar using LanguageTool</em:description>
     <em:targetApplication>
       <Description>
         <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- thunderbird -->
@@ -17,12 +20,23 @@
         <em:maxVersion>60.*</em:maxVersion>
       </Description>
     </em:targetApplication>
-  <em:targetApplication>
+    <em:targetApplication>
       <Description>
-      <em:id>postbox@postbox-inc.com</em:id> <!-- postbox -->
+        <em:id>postbox@postbox-inc.com</em:id> <!-- postbox -->
         <em:minVersion>4.0</em:minVersion>
-          <em:maxVersion>5.*</em:maxVersion>
-    </Description>
-  </em:targetApplication>
+        <em:maxVersion>5.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <!-- Hungarian -->
+    <em:localized>
+      <Description>
+        <em:locale>hu</em:locale>
+        <em:name>Nyelvtan-ellenőrzes (Grammar Checker)</em:name>
+        <em:description>Nyelvtan-ellenőrzes a LanguageTool segítségével</em:description>
+        <em:translator>Alexander Slesarev (en-US)</em:translator>
+        <em:translator>Óvári (hu)</em:translator>
+        <em:translator>Alexander Slesarev (ru)</em:translator>
+      </Description>
+    </em:localized>
   </Description>
 </RDF>
