@@ -31,8 +31,8 @@
     <em:localized>
       <Description>
         <em:locale>hu</em:locale>
-        <em:name>Nyelvtan-ellenőrzes (Grammar Checker)</em:name>
-        <em:description>Nyelvtan-ellenőrzes a LanguageTool segítségével</em:description>
+        <em:name>Nyelvtan-ellenőrzés (Grammar Checker)</em:name>
+        <em:description>Nyelvtan-ellenőrzés a „LanguageTool” segítségével</em:description>
         <em:translator>Alexander Slesarev (en-US)</em:translator>
         <em:translator>Óvári (hu)</em:translator>
         <em:translator>Alexander Slesarev (ru)</em:translator>
