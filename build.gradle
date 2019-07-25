@@ -1,5 +1,5 @@
 plugins {
-  id "com.moowork.node" version "1.2.0"
+  id "com.moowork.node" version "1.3.1"
 }
 
 import static org.apache.tools.ant.taskdefs.condition.Os.*
@@ -18,11 +18,11 @@ task test(type: Exec, dependsOn: eslint) {
   commandLine "./node_modules/.bin/$exe_name"
 }
 
-task build(type: Zip) {
+task build(type: Zip, dependsOn: test) {
   from "grammarchecker"
-  baseName = "grammar_checker"
-  version = "0.8.3"
-  classifier = "tb"
-  extension = "xpi"
-  dependsOn test
+  archiveBaseName = "grammar_checker"
+  archiveVersion = "0.8.3"
+  archiveClassifier = "tb"
+  archiveExtension = "xpi"
+  destinationDirectory = buildDir
 }
