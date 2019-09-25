@@ -209,33 +209,38 @@ if ("undefined" == typeof(grammarchecker)) {
             this._showText("processingMessage"," "+server+" ["+lang+"] ...");
 
             //Get the html Source message document
-            let htmlSource = encodeURIComponent(this._nodesMapping.init());
-            Components.utils.importGlobalProperties(["XMLHttpRequest"]);
-            let req = new XMLHttpRequest();
-            req.open('POST', server + "/v2/check", true);
-            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            req.setRequestHeader('Accept', 'application/json');
-            req.onreadystatechange = function(){
-                if (req.readyState == 4) {
+            const htmlSource = encodeURIComponent(this._nodesMapping.init());
+            let body = "language=" + lang + "&text=" + htmlSource;
+            if (mothertongue.lenght > 0) {
+                body = "motherTongue=" + mothertongue + body;
+            }
+            const promise = new Promise(function(resolve, reject) {
+                const req = new XMLHttpRequest();
+                const url = server + "/v2/check";
+                req.open('POST', url, true);
+                req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                req.setRequestHeader('Accept', 'application/json');
+                req.onload = function() {
                     let result = req.responseText;
                     if (result) {
-                        that._showResult(result);
+                        resolve(result);
                     } else {
-                        that._showError("errorMessage");
-                        errorHandler(req.statusText);
+                        reject(req.statusText);
                     }
-                }
-            };
-            try {
-                let uri = "language=" + lang + "&text=" + htmlSource;
-                if (mothertongue.lenght > 0) {
-                    uri = "motherTongue=" + mothertongue + uri;
-                }
-                req.send(uri);
-            } catch (ex) {
-                this._showError("errorMessage");
-                errorHandler(ex);
-            }
+                };
+                req.onerror = function() {
+                    reject(req.statusText);
+                };
+                req.send(body);
+            });
+            promise
+                .then(function(result) {
+                    that._showResult(result);
+                })
+                .catch(function(error) {
+                    that._showError("errorMessage");
+                    errorHandler(error);
+                });
         },
         onMenuItemCommand: function() {
             let that = this;

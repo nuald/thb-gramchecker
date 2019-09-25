@@ -49,9 +49,6 @@ const sandbox = {
     XMLHttpRequest: function() { return XmlHTTPRequest; },
     Components: {
         interfaces: {},
-        utils: {
-            importGlobalProperties: function() {}
-        }
     },
     Node: {
         TEXT_NODE: TEXT_NODE

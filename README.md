@@ -43,9 +43,9 @@ To use the local server, please [download](https://languagetool.org/) the stand-
 
 The sample instructions:
 
-    $ wget https://languagetool.org/download/LanguageTool-4.3.zip
-    $ unzip LanguageTool-4.3.zip
-    $ cd LanguageTool-4.3
+    $ wget https://languagetool.org/download/LanguageTool-4.6.zip
+    $ unzip LanguageTool-4.6.zip
+    $ cd LanguageTool-4.6
     $ java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port 8081
 
 ## Development
