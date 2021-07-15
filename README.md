@@ -1,5 +1,7 @@
 # Thunderbird Grammar Checker
 
+NOTE: Not maintained anymore - TB 78+ requires redesign of the extension, and I don't have an ability now to port it.
+
 Thunderbird add-on for checking grammar using [LanguageTool](https://www.languagetool.org/).
 
 Official Thunderbird Grammar Checker add-on: [https://addons.thunderbird.net/thunderbird/addon/grammar-checker/](https://addons.thunderbird.net/thunderbird/addon/grammar-checker/)
